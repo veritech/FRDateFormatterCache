@@ -27,7 +27,7 @@
     
     NSDateFormatter *dateFormatter;
     
-    if (!(dateFormatter = [[self ING_cache] objectForKey:aFormat])) {
+    if (!(dateFormatter = [[self FRDateFormatter_cache] objectForKey:aFormat])) {
         dateFormatter = [[NSDateFormatter alloc] init];
         
         [dateFormatter setDateFormat:aFormat];
@@ -45,7 +45,7 @@
 
     NSDateFormatter *dateFormatter;
     
-    if (!(dateFormatter = [[self ING_cache] objectForKey:aFormat])) {
+    if (!(dateFormatter = [[self FRDateFormatter_cache] objectForKey:aFormat])) {
         dateFormatter = [[NSDateFormatter alloc] init];
         
         [dateFormatter setDateFormat:aFormat];
