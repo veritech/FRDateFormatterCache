@@ -57,4 +57,25 @@
     return [dateFormatter dateFromString:aDateString];
 }
 
++ (NSString *)stringWithFormat:(NSString *)aFormat
+              localeIdentifier:(NSString *)localeIdentifier
+                          date:(NSDate *)aDate
+{
+    NSDateFormatter *dateFormatter;
+    NSString *cacheKey = [NSString stringWithFormat:@"%@-%@",aFormat,localeIdentifier];
+    
+    if (!(dateFormatter = [[self FRDateFormatter_cache] objectForKey:cacheKey])) {
+        dateFormatter = [[NSDateFormatter alloc] init];
+        
+        [dateFormatter setDateFormat:aFormat];
+       
+        [dateFormatter setLocale:[NSLocale localeWithLocaleIdentifier:localeIdentifier]];
+        
+        [[self FRDateFormatter_cache] setObject:dateFormatter
+                                         forKey:cacheKey];
+    }
+    
+    return [dateFormatter stringFromDate:aDate];
+}
+
 @end

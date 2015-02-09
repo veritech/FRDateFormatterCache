@@ -27,4 +27,15 @@
 + (NSDate *)dateWithFormat:(NSString *)aFormat
                     string:(NSString *)aDateString;
 
+/**
+ *  Format a date as a string. The date formatter is cached
+ *  @param  aFormat A String format
+ *  @param  localeIdentifier The locale identifier ie: en_US
+ *  @param  aDate A Date to format
+ *  @return The formatted string
+ */
++ (NSString *)stringWithFormat:(NSString *)aFormat
+              localeIdentifier:(NSString *)localeIdentifier
+                          date:(NSDate *)aDate;
+
 @end
