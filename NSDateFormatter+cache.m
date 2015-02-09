@@ -62,7 +62,7 @@
                           date:(NSDate *)aDate
 {
     NSDateFormatter *dateFormatter;
-	NSString *cacheKey = [NSString stringWithFormat:@"%@-%@",aFormat,localeIdentifier];
+    NSString *cacheKey = [NSString stringWithFormat:@"%@-%@",aFormat,localeIdentifier];
     
     if (!(dateFormatter = [[self FRDateFormatter_cache] objectForKey:cacheKey])) {
         dateFormatter = [[NSDateFormatter alloc] init];
