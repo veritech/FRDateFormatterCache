@@ -58,23 +58,21 @@
 }
 
 + (NSString *)stringWithFormat:(NSString *)aFormat
+              localeIdentifier:(NSString *)localeIdentifier
                           date:(NSDate *)aDate
-             usingLocalisation:(BOOL)usingLocalisation
 {
-    
     NSDateFormatter *dateFormatter;
+	NSString *cacheKey = [NSString stringWithFormat:@"%@-%@",aFormat,localeIdentifier];
     
-    if (!(dateFormatter = [[self FRDateFormatter_cache] objectForKey:aFormat])) {
+    if (!(dateFormatter = [[self FRDateFormatter_cache] objectForKey:cacheKey])) {
         dateFormatter = [[NSDateFormatter alloc] init];
         
         [dateFormatter setDateFormat:aFormat];
-        
-        if (!usingLocalisation) {
-            [dateFormatter setLocale:[NSLocale localeWithLocaleIdentifier:@"en_US"]];
-        }
+       
+        [dateFormatter setLocale:[NSLocale localeWithLocaleIdentifier:localeIdentifier]];
         
         [[self FRDateFormatter_cache] setObject:dateFormatter
-                                         forKey:aFormat];
+                                         forKey:cacheKey];
     }
     
     return [dateFormatter stringFromDate:aDate];

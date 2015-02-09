@@ -30,11 +30,12 @@
 /**
  *  Format a date as a string. The date formatter is cached
  *  @param  aFormat A String format
+ *  @param  localeIdentifier The locale identifier ie: en_US
  *  @param  aDate A Date to format
- *  @param  usingLocalisation A BOOL value indicates wether the formatter should use device's locale settings
  *  @return The formatted string
  */
 + (NSString *)stringWithFormat:(NSString *)aFormat
-                          date:(NSDate *)aDate
-             usingLocalisation:(BOOL)usingLocalisation;
+              localeIdentifier:(NSString *)localeIdentifier
+                          date:(NSDate *)aDate;
+
 @end
