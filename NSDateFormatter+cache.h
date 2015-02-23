@@ -53,4 +53,9 @@
                     locale:(NSString *)localeIdentifier
                     string:(NSString *)aDateString;
 
+/**
+ *  Causes the internal cache of date formatters to be cleared when the current locale changes
+ */
++ (void)clearCachedDateFormattersWhenCurrentLocaleChanges;
+
 @end

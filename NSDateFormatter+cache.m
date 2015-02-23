@@ -9,6 +9,7 @@
 
 @implementation NSDateFormatter (FRDateFormatter_cache)
 
+#pragma mark - The NSDateFormatter cache
 + (NSCache *)FRDateFormatter_cache
 {
     static NSCache *cache;
@@ -21,6 +22,21 @@
     return cache;
 }
 
+#pragma mark - Handle current locale changes
++ (void)clearCachedDateFormattersWhenCurrentLocaleChanges {
+    static id observer;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        observer = [[NSNotificationCenter defaultCenter] addObserverForName:NSCurrentLocaleDidChangeNotification
+                                                                     object:nil
+                                                                      queue:[NSOperationQueue mainQueue]
+                                                                 usingBlock:^(NSNotification *note) {
+                                                                     [[self FRDateFormatter_cache] removeAllObjects];
+                                                                 }];
+    });
+}
+
+#pragma mark - Generate cache keys
 + (NSString *)cacheKeyWithFormat:(NSString *)format
                         timezone:(NSString *)timezone
                           locale:(NSString *)locale {
