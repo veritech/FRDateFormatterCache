@@ -21,61 +21,85 @@
     return cache;
 }
 
++ (NSString *)cacheKeyWithFormat:(NSString *)format
+                        timezone:(NSString *)timezone
+                          locale:(NSString *)locale {
+    return [NSString stringWithFormat:@"FRDateFormatter-%@-%@-%@",format,timezone,locale];
+}
+
+#pragma mark - Dates to Strings
 + (NSString *)stringWithFormat:(NSString *)aFormat
-                          date:(NSDate *)aDate
-{
-    
+                          date:(NSDate *)aDate {
+    return [self stringWithFormat:aFormat
+                         timezone:nil
+                           locale:nil
+                             date:aDate];
+}
+
++ (NSString *)stringWithFormat:(NSString *)aFormat
+                      timezone:(NSString *)timezoneName
+                        locale:(NSString *)localeIdentifier
+                          date:(NSDate *)aDate {
     NSDateFormatter *dateFormatter;
+    NSString *key = [self cacheKeyWithFormat:aFormat
+                                    timezone:timezoneName
+                                      locale:localeIdentifier];
     
-    if (!(dateFormatter = [[self FRDateFormatter_cache] objectForKey:aFormat])) {
+    if (!(dateFormatter = [[self FRDateFormatter_cache] objectForKey:key])) {
         dateFormatter = [[NSDateFormatter alloc] init];
         
-        [dateFormatter setDateFormat:aFormat];
+        dateFormatter.dateFormat = aFormat;
+        
+        if (timezoneName) {
+            dateFormatter.timeZone = [NSTimeZone timeZoneWithName:timezoneName];
+        }
+        
+        if (localeIdentifier) {
+            dateFormatter.locale = [NSLocale localeWithLocaleIdentifier:localeIdentifier];
+        }
         
         [[self FRDateFormatter_cache] setObject:dateFormatter
-                                         forKey:aFormat];
+                                         forKey:key];
     }
-    
     return [dateFormatter stringFromDate:aDate];
+}
+
+#pragma mark - Strings to dates
++ (NSDate *)dateWithFormat:(NSString *)aFormat
+                    string:(NSString *)aDateString {
+    return [self dateWithFormat:aFormat
+                       timezone:nil
+                         locale:nil
+                         string:aDateString];
 }
 
 + (NSDate *)dateWithFormat:(NSString *)aFormat
-                    string:(NSString *)aDateString
-{
-
+                  timezone:(NSString *)timezoneName
+                    locale:(NSString *)localeIdentifier
+                    string:(NSString *)aDateString {
     NSDateFormatter *dateFormatter;
+    NSString *key = [self cacheKeyWithFormat:aFormat
+                                    timezone:timezoneName
+                                      locale:localeIdentifier];
     
-    if (!(dateFormatter = [[self FRDateFormatter_cache] objectForKey:aFormat])) {
+    if (!(dateFormatter = [[self FRDateFormatter_cache] objectForKey:key])) {
         dateFormatter = [[NSDateFormatter alloc] init];
         
-        [dateFormatter setDateFormat:aFormat];
+        dateFormatter.dateFormat = aFormat;
+        
+        if (timezoneName) {
+            dateFormatter.timeZone = [NSTimeZone timeZoneWithName:timezoneName];
+        }
+        
+        if (localeIdentifier) {
+            dateFormatter.locale = [NSLocale localeWithLocaleIdentifier:localeIdentifier];
+        }
         
         [[self FRDateFormatter_cache] setObject:dateFormatter
-                                         forKey:aFormat];
+                                         forKey:key];
     }
     
     return [dateFormatter dateFromString:aDateString];
-}
-
-+ (NSString *)stringWithFormat:(NSString *)aFormat
-              localeIdentifier:(NSString *)localeIdentifier
-                          date:(NSDate *)aDate
-{
-    NSDateFormatter *dateFormatter;
-    NSString *cacheKey = [NSString stringWithFormat:@"%@-%@",aFormat,localeIdentifier];
-    
-    if (!(dateFormatter = [[self FRDateFormatter_cache] objectForKey:cacheKey])) {
-        dateFormatter = [[NSDateFormatter alloc] init];
-        
-        [dateFormatter setDateFormat:aFormat];
-       
-        [dateFormatter setLocale:[NSLocale localeWithLocaleIdentifier:localeIdentifier]];
-        
-        [[self FRDateFormatter_cache] setObject:dateFormatter
-                                         forKey:cacheKey];
-    }
-    
-    return [dateFormatter stringFromDate:aDate];
 }
 
 @end
