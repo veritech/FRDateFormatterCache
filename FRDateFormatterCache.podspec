@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "FRDateFormatterCache"
-  s.version      = "0.1.1"
+  s.version      = "0.2.0"
   s.summary      = "A simple category on NSDateFormatter for caching date formatters"
   s.homepage     = "https://github.com/veritech/FRDateFormatterCache"
   s.license      = { :type => 'MIT', :file => 'LICENSE' }
